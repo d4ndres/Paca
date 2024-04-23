@@ -20,6 +20,7 @@ onMounted(() => {
   <div class="flex bg-slate-500 h-[100vh] ">
     <aside class="w-[300px] flex flex-col transition-all duration-300" :style="{ width: isExpanded ? '300px' : '0' }">
       <NuxtLink to="/dashboard" class="h-[40px] flex items-center px-2">Actualización digital</NuxtLink>
+      <NuxtLink to="/dashboard/trabajadores" class="hover:bg-red-100 p-2 transition duration-300">Trabajadores</NuxtLink>
       <NuxtLink to="/dashboard/labores" class="hover:bg-red-100 p-2 transition duration-300">Labores</NuxtLink>
     </aside>
     <div class="w-full bg-green-50 ">

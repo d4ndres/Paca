@@ -1,0 +1,2 @@
+export const PUBLIC_APIKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeHhhY3l3bXdzd3RtcnR1YXNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM4ODU2NjAsImV4cCI6MjAyOTQ2MTY2MH0.WrODjGbFW4HcPwpkTPdf6UWbJTLll8yiXcoagT59d1k'
+export const backendDominio = 'https://vcxxacywmwswtmrtuasd.supabase.co/rest/v1/'
