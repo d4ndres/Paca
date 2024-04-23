@@ -14,17 +14,19 @@ function isInMain() {
 </script>
 
 <template>
-  <section>
+  <section class="p-2">
     
     <article v-if="inMain">
+      <h2 class="text-2xl mb-4">Labores realizadas</h2>
+
       <div>
-        <NuxtLink to="/dashboard/labores/nuevo_registro">
+        <NuxtLink class="rounded-md bg-pink-200 p-2" to="/dashboard/labores/nuevo_registro">
           Nuevo Registro
         </NuxtLink>
       </div>
 
       <div>
-        Lista de todos los registros
+        <!-- Lista de todos los registros -->
       </div>
     </article>
 
