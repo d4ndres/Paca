@@ -10,5 +10,10 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
+  },
+  modules: ['@formkit/nuxt'],
+  formkit: {
+    // Experimental support for auto loading (see note):
+    autoImport: true
   }
 })
