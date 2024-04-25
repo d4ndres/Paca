@@ -1,5 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  srcDir: 'src/',
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false
+
+    }
+  ],
   devtools: { enabled: true },
   typescript: {
     typeCheck: true
@@ -11,9 +19,19 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ['@formkit/nuxt'],
+  modules: ['@formkit/nuxt','@nuxtjs/supabase', 'nuxt-icon', '@nuxtjs/tailwindcss'],
   formkit: {
     // Experimental support for auto loading (see note):
     autoImport: true
+  },
+  supabase: {
+    redirect: false,
+    redirectOptions: {
+      login: '/login',
+      callback: '/confirm',
+      include: undefined,
+      exclude: [],
+      cookieRedirect: false,
+    }
   }
 })
