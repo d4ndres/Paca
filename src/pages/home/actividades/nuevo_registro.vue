@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const responseTrabajadores = await $fetch('/api/empleados') as { trabajadores: Trabajador[] };
+const responseTrabajadores = await $fetch('/api/empleados') as { trabajadores: empleado[] };
 const trabajadores = computed(() => {
   const trabajadores = [{
     label: 'Seleccione trabajador',
@@ -8,7 +8,7 @@ const trabajadores = computed(() => {
   }]
   return [
     ...trabajadores,
-    ...responseTrabajadores.trabajadores.map((trabajador: Trabajador) => ({
+    ...responseTrabajadores.trabajadores.map((trabajador: empleado) => ({
       label: trabajador.nombre,
       value: trabajador.id
     }))
@@ -22,71 +22,54 @@ const formData = ref<any>({});
 const hasHorasExtrasAntes = computed(() => formData.value.horasExtrasAntes )
 const hasHorasExtrasDespues = computed(() =>  formData.value.horasExtrasDespues )
 
-const sendInfo = async (fields: any) => {
-  const responseActividades = await $fetch('/api/actividades', {
+const sendInfo = async ( fields: any ) => {
+
+  const { empleado_id, fecha, labor, lote} = fields
+  $fetch('/api/actividades', {
     method: 'post',
-    body: {
-      trabajadorId: fields.trabajador,
-      fecha: fields.fecha,
-      labor: fields.labor,
-      lote: fields.lote
+    body: { empleado_id, fecha, labor, lote}
+  }).then( ({ error, data }) => {
+    return new Promise( (resolve, reject) => {
+      if (error) reject(error)
+      resolve(data)
+    }) 
+  }).then( async ( [actividad] : any) => {
+    
+    const horasExtras = []
+
+    if( fields.horasExtrasAntes ) {
+      horasExtras.push({
+        empleado_id,
+        actividadRealizada_id: actividad.id,
+        horaInicio: fields.horaInicioAntes,
+        horaSalida: fields.horaFinalAntes
+      })
     }
-  });
-  console.log(responseActividades);
 
+    if( fields.horasExtrasDespues ) {
+      horasExtras.push({
+        empleado_id,
+        actividadRealizada_id: actividad.id,
+        horaInicio: fields.horaInicioDespues,
+        horaSalida: fields.horaFinalDespues
+      })
+    }
 
+    if( horasExtras.length ) {
+      const { error, data } = await $fetch('/api/empleadosHorasExtra', {
+        method: 'post',
+        body: horasExtras
+      })
 
-  console.log(fields);
-  return null
+      console.log(error);
+      console.log(data);
 
-  const laborRealizada = {
-    nombre_trabajador: fields.nombre_trabajador,
-    fecha: fields.fecha,
-    labor: fields.labor,
-    lote: Number(fields.lote)
-  }
-
-  const horasExtras = []
-  if (fields.horasExtrasAntes) {
-    horasExtras.push({
-      fecha: fields.fecha,
-      nombre_trabajador: fields.nombre_trabajador,
-      labor: fields.labor,
-      lote: Number(fields.lote),
-      horaInicio: fields.horaInicioAntes,
-      horaDeSalida: fields.horaFinalAntes
-    })
-  }
-  if (fields.horasExtrasDespues) {
-    horasExtras.push({
-      fecha: fields.fecha,
-      nombre_trabajador: fields.nombre_trabajador,
-      labor: fields.labor,
-      lote: Number(fields.lote),
-      horaInicio: fields.horaInicioDespues,
-      horaDeSalida: fields.horaFinalDespues
-    })
-  }
-
-  // const responseActividades = await $fetch('/api/actividades', {
-  //   method: 'post',
-  //   body: laborRealizada
-  // });
-  // console.log(responseActividades);
-
-
-  if (fields.horasExtrasAntes || fields.horasExtrasDespues) {
-    console.log(horasExtras);
-
-    const responseHorasExtra: any = await $fetch('/api/horasExtra', {
-      method: 'post',
-      body: horasExtras
-    });
-    console.log(responseHorasExtra);
-
-  }
-
-
+    } else {
+      isSuccess.value = true
+    }
+  }).catch( error => {
+    console.log(error);
+  }) 
 }
 
 
@@ -99,15 +82,19 @@ const sendInfo = async (fields: any) => {
     </div>
     <div class="flex justify-between">
       <FormKit type="form" @submit="sendInfo" :actions="false" v-model="formData">
-        <FormKit type="select" name="trabajador" label="Seleccione trabajador" :options="trabajadores" validation="required" />
-        <FormKit type="date" name="fecha" label="Fecha" validation="required" />
-        <FormKit type="text" name="labor" label="Labor" validation="required" />
-        <FormKit type="number" name="lote" label="Lote" validation="required|min:0|max:10" />
+        <div>
+          <FormKit type="select" name="empleado_id" label="Seleccione trabajador" :options="trabajadores" validation="required" />
+          <FormKit type="date" name="fecha" label="Fecha" validation="required" />
+          <FormKit type="text" name="labor" label="Labor" validation="required" />
+          <FormKit type="number" name="lote" label="Lote" validation="required|min:0|max:10" />
+        </div>
+        
         <FormKit type="checkbox" name="horasExtrasAntes" label="Horas extras antes de la jornada" :value="false" />
         <div v-if="hasHorasExtrasAntes">
           <FormKit type="time" name="horaInicioAntes" label="Hora de inicio" validation="required" />
           <FormKit type="time" name="horaFinalAntes" label="Hora final" validation="required" />
         </div>
+        
         <FormKit type="checkbox" name="horasExtrasDespues" label="Horas extras después de la jornada" :value="false" />
         <div v-if="hasHorasExtrasDespues">
           <FormKit type="time" name="horaInicioDespues" label="Hora de inicio" validation="required" />

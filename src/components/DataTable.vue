@@ -1,22 +1,33 @@
 <script setup lang="ts">
-import { defineProps, computed } from 'vue';
 
 const props = defineProps({
   data: {
     type: Array as () => Array<object>,
     required: true
+  },
+  columns: {
+    type: Array as () => Array<string>,
+    default: () => []
   }
 });
 
 const headers = computed(() => {
-  // Extract the keys from the first object in the data array
+  if( props.columns.length ) {
+    return props.columns
+  }
+  if( !props.data.length ) {
+    return []
+  }
   return Object.keys(props.data[0]);
 });
 
 const rows = computed(() => {
   // Return the data array excluding the first object (header row)
-  return props.data.slice(1);
+  return props.data
 });
+
+
+
 </script>
 
 

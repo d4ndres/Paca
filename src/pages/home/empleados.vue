@@ -1,14 +1,8 @@
 <script setup lang="ts">
 
-type Trabajador = {
-  id: number;
-  created_at: string;
-  nombre: string;
-  especialidad: string;
-};
 
-const {trabajadores} = await $fetch('/api/empleados') as {trabajadores: Trabajador[]};
-console.log(trabajadores);
+
+const {trabajadores} = await $fetch('/api/empleados') as {trabajadores: empleado[]};
 </script>
 
 <template>

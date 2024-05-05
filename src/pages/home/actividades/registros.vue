@@ -1,15 +1,26 @@
 <script setup lang="ts">
-type ActividadesRealizadas = {
-  id: number;
-  created_at: string;
-  nombre_trabajador: string;
-  fecha: string;
-  labor: string;
-  lote: string;
-};
 
-const responseActividades = await $fetch('/api/actividades') as { AvtividadesRealizadas: ActividadesRealizadas[] };
-console.log(responseActividades);
+const responseActividades = ref({
+  error: null,
+  data: []
+})
+
+onMounted( async () => {
+  responseActividades.value = await $fetch('/api/actividades') as any
+})
+
+const actividades = computed(() => {
+  if( responseActividades.value.data.length ) {
+    return responseActividades.value.data.map( (actividad: any) => ({
+      id: actividad.id,
+      fecha: actividad.fecha,
+      empleado: actividad.Empleado.nombre,
+      labor: actividad.labor,
+      lote: actividad.lote
+    }))
+  }
+  return []
+})
 
 </script>
 
@@ -19,5 +30,5 @@ console.log(responseActividades);
       Nuevo Registro
     </NuxtLink>
   </div>
-  <!-- <DataTable :data="responseActividades" /> -->
+  <DataTable :data="actividades" />
 </template>
