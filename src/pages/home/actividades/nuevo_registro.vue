@@ -16,7 +16,7 @@ const trabajadores = computed(() => {
 });
 
 
-const isSuccess = ref(false)
+const isSuccess = ref<boolean|null>(null)
 
 const formData = ref<any>({});
 const hasHorasExtrasAntes = computed(() => formData.value.horasExtrasAntes )
@@ -61,15 +61,29 @@ const sendInfo = async ( fields: any ) => {
         body: horasExtras
       })
 
-      console.log(error);
-      console.log(data);
+      if( !error ) {
+        setStateSuccess(true)
+      }
 
     } else {
-      isSuccess.value = true
+      setStateSuccess(true)
+      
     }
   }).catch( error => {
     console.log(error);
+    isSuccess.value = false
   }) 
+}
+
+function setStateSuccess( state : boolean  ) {
+  isSuccess.value = state
+  if( state ) {
+    formData.value = {}
+  }
+
+  setTimeout( () => {
+    isSuccess.value = null
+  }, 3000)
 }
 
 
@@ -102,12 +116,14 @@ const sendInfo = async ( fields: any ) => {
         </div>
         <FormKit type="submit" label="Guardar registro" />
       </FormKit>
-      <div>
-        <div v-if="isSuccess" class="alert alert-success"
-          style="margin-top: 20px; padding: 10px; background-color: #d4edda; color: #155724; border-color: #c3e6cb; border-radius: 4px;">
+      <Teleport to="body">
+        <div v-if="isSuccess === true" class="fixed bottom-0 right-0 p-4 bg-green-500 text-white shadow-lg rounded-lg">
           La entrega de información ha sido exitosa.
         </div>
-      </div>
+        <div v-if="isSuccess === false" class="fixed bottom-0 right-0 p-4 bg-red-500 text-white shadow-lg rounded-lg">
+          Ha ocurrido un error en la entrega de información.
+        </div>
+      </Teleport>
     </div>
   </div>
 </template>
