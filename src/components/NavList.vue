@@ -4,7 +4,8 @@ const navList = [
   { path: '/home', text: 'Home', icon: 'home-outline' },
   { path: '/home/empleados', text: 'Empleados', icon: 'address-card' },
   { path: '/home/actividades', text: 'Actividades', icon: 'clippy' },
-  { path: '/home/horasExtra', text: 'Horas extra', icon: 'clock' }
+  { path: '/home/horasExtra', text: 'Horas extra', icon: 'clock' },
+  { path: '/home/combustibles', text: 'Combustibles', icon: 'oil' }
 ]
 
 </script>
