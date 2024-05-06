@@ -19,7 +19,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ['@formkit/nuxt','@nuxtjs/supabase', '@nuxtjs/tailwindcss', 'nuxt-lucide-icons'],
+  modules: ['@formkit/nuxt','@nuxtjs/supabase', '@nuxtjs/tailwindcss'],
   formkit: {
     // Experimental support for auto loading (see note):
     autoImport: true
