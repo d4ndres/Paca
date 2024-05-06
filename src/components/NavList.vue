@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const isExpanded = useState('isExpanded')
 const navList = [
-  { path: '/home', text: 'Home', icon: 'ion:home-outline' },
-  { path: '/home/empleados', text: 'Empleados', icon: 'fa6-regular:address-card' },
-  { path: '/home/actividades', text: 'Actividades', icon: 'octicon:clippy' },
-  { path: '/home/horasExtra', text: 'Horas extra', icon: 'fa6-regular:clock' }
+  { path: '/home', text: 'Home', icon: 'home-outline' },
+  { path: '/home/empleados', text: 'Empleados', icon: 'address-card' },
+  { path: '/home/actividades', text: 'Actividades', icon: 'clippy' },
+  { path: '/home/horasExtra', text: 'Horas extra', icon: 'clock' }
 ]
 
 </script>
