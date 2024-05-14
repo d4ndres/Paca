@@ -19,7 +19,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ['@formkit/nuxt','@nuxtjs/supabase', '@nuxtjs/tailwindcss'],
+  modules: ['@formkit/nuxt','@nuxtjs/supabase', '@nuxtjs/tailwindcss', '@pinia/nuxt'],
   formkit: {
     // Experimental support for auto loading (see note):
     autoImport: true

@@ -8,23 +8,9 @@ type CombustibleInventario = {
   cantidadActual: number,
 }
 
-const combustibles = ref<CombustibleInventario[]>([])
-const catalogoCombustibles = computed(() => {
-  return [
-    { label: 'seleccionar', value: null },
-    ...combustibles.value.map(({ id, tipo }) => Object.assign({ value: id, label: tipo }))
-  ]
-})
-
-onMounted(async () => {
-  await getInventario()
-})
-
-const getInventario = async () => {
-  const response = await $fetch('/api/combustiblesInventario') as { data: any[] }
-  combustibles.value = response.data
-}
-
+import { useCombustibles } from '~/store/combustibles';
+const store = useCombustibles()
+const { combustiblesToSelect, combustibles  } = storeToRefs(store)
 
 const formData = ref<any>({})
 const isSuccess = ref<null | boolean>(null)
@@ -52,7 +38,7 @@ const sendInfo = (fields: any) => {
       resolve(data)
     })
   }).then(async ([ingreso]: any) => {
-    const { cantidadActual } = combustibles.value.find(({ id }) => id == ingreso.combustible_id) as CombustibleInventario
+    const { cantidadActual } = combustibles.value.find(({ id } : any) => id == ingreso.combustible_id) as CombustibleInventario
     const nuevaCantidad = cantidadActual + ingreso.cantidad
 
     const response = await $fetch(`/api/combustiblesInventario/${ingreso.combustible_id}`, {
@@ -87,7 +73,7 @@ const sendInfo = (fields: any) => {
   <div>
     <FormKit type="form" @submit="sendInfo" :actions="false" v-model="formData">
       <FormKit type="date" name="fecha" label="Fecha" />
-      <FormKit type="select" name="combustible_id" label="Seleccione combustible" :options="catalogoCombustibles"
+      <FormKit type="select" name="combustible_id" label="Seleccione combustible" :options="combustiblesToSelect"
         validation="required" />
       <FormKit type="number" name="valorUnitario" label="valor unidad" />
       <FormKit type="number" name="cantidad" label="Cantidad" />

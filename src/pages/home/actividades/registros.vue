@@ -1,26 +1,8 @@
 <script setup lang="ts">
+import { useActividades } from '~/store/pacaStore'
+const store = useActividades()
+const { actividadesToShow } : any = storeToRefs(store)
 
-const responseActividades = ref({
-  error: null,
-  data: []
-})
-
-onMounted( async () => {
-  responseActividades.value = await $fetch('/api/actividades') as any
-})
-
-const actividades = computed(() => {
-  if( responseActividades.value.data.length ) {
-    return responseActividades.value.data.map( (actividad: any) => ({
-      id: actividad.id,
-      fecha: actividad.fecha,
-      empleado: actividad.Empleado.nombre,
-      labor: actividad.labor,
-      lote: actividad.lote
-    }))
-  }
-  return []
-})
 
 </script>
 
@@ -30,5 +12,5 @@ const actividades = computed(() => {
       Nuevo Registro
     </NuxtLink>
   </div>
-  <DataTable :data="actividades" />
+  <DataTable :data="actividadesToShow" />
 </template>

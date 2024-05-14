@@ -3,6 +3,17 @@ const route = useRoute()
 const inCombustibles = computed(() => route.name == 'home-combustibles' )
 
 
+import { useCombustibles } from '~/store/combustibles';
+const store = useCombustibles()
+const { setCombustibles } = store
+
+onMounted(() => {
+  $fetch('/api/combustiblesInventario')
+  .then(({ data }) => {
+    setCombustibles(data)
+  })
+})
+
 </script> 
 
 <template>

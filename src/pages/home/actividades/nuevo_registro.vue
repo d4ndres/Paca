@@ -1,19 +1,7 @@
 <script setup lang="ts">
-
-const responseTrabajadores = await $fetch('/api/empleados') as { trabajadores: empleado[] };
-const trabajadores = computed(() => {
-  const trabajadores = [{
-    label: 'Seleccione trabajador',
-    value: null
-  }]
-  return [
-    ...trabajadores,
-    ...responseTrabajadores.trabajadores.map((trabajador: empleado) => ({
-      label: trabajador.nombre,
-      value: trabajador.id
-    }))
-  ]
-});
+import { useEmpleadosStore } from '~/store/empleados';
+const store = useEmpleadosStore();
+const {empleadosToSelect} = storeToRefs(store);
 
 
 const isSuccess = ref<boolean|null>(null)
@@ -97,7 +85,7 @@ function setStateSuccess( state : boolean  ) {
     <div class="flex justify-between">
       <FormKit type="form" @submit="sendInfo" :actions="false" v-model="formData">
         <div>
-          <FormKit type="select" name="empleado_id" label="Seleccione trabajador" :options="trabajadores" validation="required" />
+          <FormKit type="select" name="empleado_id" label="Seleccione trabajador" :options="empleadosToSelect" validation="required" />
           <FormKit type="date" name="fecha" label="Fecha" validation="required" />
           <FormKit type="text" name="labor" label="Labor" validation="required" />
           <FormKit type="number" name="lote" label="Lote" validation="required|min:0|max:10" />

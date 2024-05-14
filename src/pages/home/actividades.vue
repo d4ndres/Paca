@@ -1,7 +1,16 @@
 <script setup lang="ts">
+import { useActividades } from '~/store/pacaStore';
+const { setActividades } = useActividades();
+
 const route = useRoute();
 
-onMounted(() => {  
+onMounted(() => {
+  $fetch('/api/actividades')
+  .then(({data} : any)=> {
+    setActividades(data)
+  })
+
+
   navigateToDefault();
 });
 
