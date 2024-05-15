@@ -29,7 +29,7 @@ function setStateSuccess(state: boolean) {
 
 const sendInfo = (fields: any) => {
   const { fecha, combustible_id, valorUnitario, cantidad } = fields
-  $fetch('/api/combustiblesIngresos', {
+  $fetch('/api/combustiblesHistorial', {
     method: 'post',
     body: { fecha, combustible_id, valorUnitario, cantidad, user_id: user_id.value }
   }).then(({ error, data }) => {

@@ -4,16 +4,21 @@ const inCombustibles = computed(() => route.name == 'home-combustibles' )
 
 
 import { useCombustibles } from '~/store/combustibles';
-const store = useCombustibles()
-const { setCombustibles } = store
+import { useLotes } from '~/store/lotes';
+import { useActividades } from '~/store/actividades';
+import { useVehiculos } from '~/store/vehiculos';
+
+const storeCombustibles = useCombustibles()
+const storeLotes = useLotes()
+const storeActividades = useActividades()
+const storeVehiculos = useVehiculos()
 
 onMounted(() => {
-  $fetch('/api/combustiblesInventario')
-  .then(({ data }) => {
-    setCombustibles(data)
-  })
+  $fetch('/api/combustiblesInventario').then(({ data }) => { storeCombustibles.setCombustibles(data) })
+  $fetch('/api/actividades').then(({ data }) => { storeActividades.setActividades(data) })
+  $fetch('/api/vehiculos').then(({ data }) => { storeVehiculos.setVehiculos(data) })
+  $fetch('/api/lotes').then(({ data }) => { storeLotes.setLotes(data) })
 })
-
 </script> 
 
 <template>

@@ -5,7 +5,7 @@ const { setActividades } = useActividades();
 const route = useRoute();
 
 onMounted(() => {
-  $fetch('/api/actividades')
+  $fetch('/api/actividadesRealizadas')
   .then(({data} : any)=> {
     setActividades(data)
   })

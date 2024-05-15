@@ -13,7 +13,7 @@ const hasHorasExtrasDespues = computed(() =>  formData.value.horasExtrasDespues 
 const sendInfo = async ( fields: any ) => {
 
   const { empleado_id, fecha, labor, lote} = fields
-  $fetch('/api/actividades', {
+  $fetch('/api/actividadesRealizadas', {
     method: 'post',
     body: { empleado_id, fecha, labor, lote}
   }).then( ({ error, data }) => {

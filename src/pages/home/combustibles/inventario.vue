@@ -1,19 +1,10 @@
 <script setup lang="ts">
-const inventario = ref<any[]>([])
-
-onMounted( async () => {
-  const response = await $fetch('/api/combustiblesInventario') as any
-  inventario.value = response.data.map(( c : any) => {
-    return {
-      ...c,
-      unidad: 'gal'      
-    }
-  })
-})
-
+import { useCombustibles } from '~/store/combustibles';
+const store = useCombustibles()
+const { combustibles } = storeToRefs(store)
 </script>
 
 <template>
   <h2 class="text-xl mb-4">Inventario de Combustibles</h2>
-  <DataTable :data="inventario" />
+  <DataTable :data="combustibles" />
 </template>
