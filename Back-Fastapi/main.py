@@ -121,7 +121,7 @@ def actividadrealizada(actividadrealizada: commands.EmpleadoActividadRealizada):
         raise e
 
 
-@app.get("/Tipoactividad")
+@app.get("/Tipoactividad/")
 def tipoactividad():
     try:
         response = handlers.get_actividadtipos()
@@ -130,7 +130,7 @@ def tipoactividad():
         raise e
 
 
-@app.post("/CombustibleGasto")
+@app.post("/CombustibleGasto/")
 def combustiblegasto(combustiblegasto: commands.CombustibleGasto):
     try:
         response = handlers.create_combustiblegasto(combustiblegasto)
@@ -148,10 +148,37 @@ def combustiblegasto(combustiblegasto_id: int, combustiblegasto: commands.Combus
         raise e
 
 
-@app.get("/CombustibleGasto")
+@app.get("/CombustibleGasto/")
 def combustiblegasto():
     try:
         response = handlers.get_combustiblegasto()
+        return response
+    except Exception as e:
+        raise e
+
+
+@app.get("/CombustibleHistorial/{combustiblehistorial_id}")
+def combustiblehistorial(combustiblehistorial_id: int):
+    try:
+        response = handlers.get_combustiblehistorial_id(combustiblehistorial_id)
+        return response
+    except Exception as e:
+        raise e
+
+
+@app.post("/CombustibleHistorial/")
+def combustiblehistorial(combustiblehistorial: commands.CombustibleHistorial):
+    try:
+        response = handlers.create_combustiblehistorial(combustiblehistorial)
+        return response
+    except Exception as e:
+        raise e
+
+
+@app.get("/CombustibleHistorial/")
+def combustiblehistorial():
+    try:
+        response = handlers.get_combustibleHistorial()
         return response
     except Exception as e:
         raise e
@@ -166,7 +193,7 @@ def combustiblegasto(combustiblegasto_id: int):
         raise e
 
 
-@app.get("/CombustibleInventario")
+@app.get("/CombustibleInventario/")
 def combustibleinventario():
     try:
         response = handlers.get_combustibleinventario()
@@ -184,7 +211,7 @@ def combustibleinventario(combustibleinventario_id: int, combustibleinventario: 
         raise e
 
 
-@app.post("/CombustibleInventario")
+@app.post("/CombustibleInventario/")
 def combustibleinventario(combustibleinventario: commands.CombustibleInventario):
     try:
         response = handlers.create_combustibleinventario(combustibleinventario)
@@ -193,7 +220,7 @@ def combustibleinventario(combustibleinventario: commands.CombustibleInventario)
         raise e
 
 
-@app.get("/Empleado")
+@app.get("/Empleado/")
 def empleado():
     try:
         response = handlers.get_empleado()
@@ -202,7 +229,7 @@ def empleado():
         raise e
 
 
-@app.post("/Empleado")
+@app.post("/Empleado/")
 def empleado(empleado: List[commands.Empleado]):
     try:
         response = handlers.create_empleado(empleado)
@@ -229,7 +256,7 @@ def empleado(empleado_id: int):
         raise e
 
 
-@app.get("/Lote")
+@app.get("/Lote/")
 def lote():
     try:
         response = handlers.get_lote()
@@ -247,7 +274,7 @@ def lote(lote_id: int, lote: commands.Lote):
         raise e
 
 
-@app.post("/Lote")
+@app.post("/Lote/")
 def lote(lote: List[commands.Lote]):
     try:
         response = handlers.create_lote(lote)
@@ -265,7 +292,7 @@ def lote(lote_id: int):
         raise e
 
 
-@app.get("/Vehiculo")
+@app.get("/Vehiculo/")
 def vehiculo():
     try:
         response = handlers.get_vehiculo()
@@ -274,7 +301,7 @@ def vehiculo():
         raise e
 
 
-@app.post("/Vehiculo")
+@app.post("/Vehiculo/")
 def vehiculo(vehiculo: List[commands.Vehiculo]):
     try:
         response = handlers.create_vehiculo(vehiculo)

@@ -2,7 +2,7 @@ from typing import List
 
 from config.db_config import supabase
 from domain import events, commands
-from exceptions import CustomException
+from Exceptions.exceptions import CustomException
 
 
 def create_actividadtipo(actividadtipo: commands.ActividadTipo):
@@ -166,6 +166,29 @@ def get_combustibleinventario():
         raise CustomException(f"Error al obtener combustible inventario: {str(e)}")
 
 
+def get_combustibleHistorial():
+    try:
+        response = supabase.table('CombustibleHistorial').select(
+            "id",
+            "created_at",
+            "fecha",
+            "valorUnitario",
+            "cantidad",
+            "gasto_id",
+            "combustible_id",
+            "user_id",
+            "Gasto:gasto_id(nombre)",
+            "Combustible:combustible_id(nombre)",
+            "cantidadDeCombustibleDepositada"
+            "Actividad:actividad_id(nombre)",
+            "Lote:lote_id(nombre)",
+            "Empleado:user_id(nombre)"
+        ).execute()
+        return response
+    except Exception as e:
+        raise CustomException(f"Error al obtener combustible historial: {str(e)}")
+
+
 def get_combustiblegasto_id(combustiblegasto_id):
     try:
         response = supabase.table('CombustibleGasto').select("*").eq('id', combustiblegasto_id).execute()
@@ -176,7 +199,22 @@ def get_combustiblegasto_id(combustiblegasto_id):
 
 def get_combustiblegasto():
     try:
-        response = supabase.table('CombustibleGasto').select("*").execute()
+        response = supabase.table('CombustibleGasto').select(
+            "id",
+            "created_at",
+            "fecha",
+            "actividad_id",
+            "lote_id",
+            "empleado_id",
+            "combustible_id",
+            "user_id",
+            "Empleado:empleado_id(nombre)",
+            "Combustible:combustible_id(nombre)",
+            "cantidadDeCombustibleDepositada"
+            "Actividad:actividad_id(nombre)",
+            "Lote:lote_id(nombre)",
+            "Empleado:user_id(nombre)"
+        ).execute()
         return response
     except Exception as e:
         raise CustomException(f"Error al obtener combustible gasto: {str(e)}")
@@ -280,7 +318,19 @@ def update_lote(lote_id, lote):
 
 def get_actividadrealizada():
     try:
-        response = supabase.table('EmpleadoActividadRealizada').select("*").execute()
+        response = supabase.table('EmpleadoActividadRealizada').select(
+            "id",
+            "created_at",
+            "fecha",
+            "actividad_id",
+            "lote_id",
+            "empleado_id",
+            "semilla_id",
+            "Empleado:empleado_id(nombre)",
+            "Actividad:actividad_id(nombre)",
+            "Lote:lote_id(nombre)",
+            "Semilla:semilla_id(nombre)"
+        ).execute()
         return response
     except Exception as e:
         raise CustomException(f"Error al obtener actividad realizada: {str(e)}")
@@ -304,7 +354,19 @@ def create_actividadrealizada(actividadrealizada: commands.EmpleadoActividadReal
 
 def get_actividadrealizada_id(actividadrealizada_id: int):
     try:
-        response = supabase.table('EmpleadoActividadRealizada').select("*").eq('id', actividadrealizada_id).execute()
+        response = supabase.table('EmpleadoActividadRealizada').select(
+            "id",
+            "created_at",
+            "fecha",
+            "actividad_id",
+            "lote_id",
+            "empleado_id",
+            "semilla_id",
+            "Empleado:empleado_id(nombre)",
+            "Actividad:actividad_id(nombre)",
+            "Lote:lote_id(nombre)",
+            "Semilla:semilla_id(nombre)"
+        ).eq('id', actividadrealizada_id).execute()
         return response
     except Exception as e:
         raise CustomException(f"Error al obtener actividad realizada por id: {str(e)}")
@@ -336,3 +398,43 @@ def create_semillas(semilla: commands.Semilla):
         return response
     except Exception as e:
         raise CustomException(f"Error al crear semilla: {str(e)}")
+
+
+def create_combustiblehistorial(combustiblehistorial):
+    try:
+        response, count = supabase.table('CombustibleHistorial').insert(
+            {
+                "fecha": f"{combustiblehistorial.fecha}",
+                "valorUnitario": f"{combustiblehistorial.valorUnitario}",
+                "cantidad": f"{combustiblehistorial.cantidad}",
+                "combustible_id": f"{combustiblehistorial.combustible_id}",
+                "user_id": f"{combustiblehistorial.user_id}",
+                "gasto_id": f"{combustiblehistorial.gasto_id}",
+                "created_at": f"{combustiblehistorial.created_at}"
+            }
+        ).execute()
+        return response
+    except Exception as e:
+        raise CustomException(f"Error al crear combustible historial: {str(e)}")
+
+
+def get_combustiblehistorial_id(combustiblehistorial_id):
+    try:
+        response = supabase.table('CombustibleHistorial').select(
+            "id",
+            "created_at",
+            "fecha",
+            "valorUnitario",
+            "cantidad",
+            "gasto_id",
+            "combustible_id",
+            "user_id",
+            "Gasto:gasto_id(nombre)",
+            "Combustible:combustible_id(nombre)",
+            "cantidadDeCombustibleDepositada"
+            "Actividad:actividad_id(nombre)",
+            "Lote:lote_id(nombre)",
+            "Empleado:user_id(nombre)").eq('id', combustiblehistorial_id).execute()
+        return response
+    except Exception as e:
+        raise CustomException(f"Error al obtener combustible historial por id: {str(e)}")
